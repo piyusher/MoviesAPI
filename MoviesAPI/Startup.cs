@@ -11,6 +11,7 @@ using MoviesAPI.Repositories;
 using MoviesAPI.Repositories.Interfaces;
 using MoviesAPI.Services;
 using MoviesAPI.Services.Interfaces;
+using Serilog;
 
 namespace MoviesAPI
 {
@@ -48,7 +49,9 @@ namespace MoviesAPI
 
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, MoviesDbContext dbContext)
+        public void Configure(IApplicationBuilder app, 
+            IWebHostEnvironment env, 
+            MoviesDbContext dbContext)
         {
             if (env.IsDevelopment())
             {
@@ -56,6 +59,7 @@ namespace MoviesAPI
             }
             else
             {
+                //Exception logging done here
                 app.UseExceptionHandler("/error");
             }
 
@@ -70,7 +74,7 @@ namespace MoviesAPI
 
 
             //Create in-memory database and seed data
-            dbContext.Database.EnsureDeleted();
+            Log.Information("Ensuring database exists, otherwise it will be created");
             dbContext.Database.EnsureCreated();
 
 

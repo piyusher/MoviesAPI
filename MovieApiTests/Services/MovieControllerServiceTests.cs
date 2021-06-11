@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Moq;
 using MoviesAPI.DataAccess.Entities;
 using MoviesAPI.Domain;
@@ -19,7 +20,8 @@ namespace MovieApiTests.Services
         {
             var mockRepo = new Mock<IMoviesRepository>();
             _mockMoviesRepo = mockRepo;
-            _svc = new MoviesControllerService(_mockMoviesRepo.Object);
+            _svc = new MoviesControllerService(_mockMoviesRepo.Object, 
+                new Mock<ILogger<IMoviesControllerService>>().Object);
         }
 
         [Fact]

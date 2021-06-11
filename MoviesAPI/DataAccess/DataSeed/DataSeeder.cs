@@ -33,7 +33,7 @@ namespace MoviesAPI.DataAccess.DataSeed
         {
             try
             {
-                Log.Debug("Starting to seed data");
+                Log.Information("Starting to seed data");
 
                 SeedGenres(modelBuilder);
                 SeedUsers(modelBuilder);
@@ -41,7 +41,7 @@ namespace MoviesAPI.DataAccess.DataSeed
                 SeedMovieGenres(modelBuilder);
                 SeedRatings(modelBuilder);
 
-                Log.Debug("Data seeded successfully");
+                Log.Information("Data seeded successfully");
 
             }
             catch (Exception ex)
@@ -52,6 +52,9 @@ namespace MoviesAPI.DataAccess.DataSeed
 
         private static void SeedMovies(ModelBuilder modelBuilder)
         {
+
+            Log.Information("Seeding Movies");
+
             //Cast to core entity before seeding
             var movies = Data.Movies.Select(movie => new MovieEntity()
             {
@@ -72,21 +75,27 @@ namespace MoviesAPI.DataAccess.DataSeed
 
         private static void SeedGenres(ModelBuilder modelBuilder)
         {
+            Log.Information("Seeding Genres");
             modelBuilder.Entity<GenreEntity>().HasData(Data.Genres.ToArray());
         }
 
         private static void SeedUsers(ModelBuilder modelBuilder)
         {
+
+            Log.Information("Seeding Users");
             modelBuilder.Entity<UserEntity>().HasData(Data.Users.ToArray());
         }
 
         private static void SeedRatings(ModelBuilder modelBuilder)
         {
+            Log.Information("Seeding Ratings");
             modelBuilder.Entity<MovieRatingEntity>().HasData(Data.Ratings.ToArray());
         }
 
         private static void SeedMovieGenres(ModelBuilder modelBuilder)
         {
+
+            Log.Information("Assigning genres to movies");
             //generate MovieGenre entities using JSON data
 
             var movieGenresCollection = (

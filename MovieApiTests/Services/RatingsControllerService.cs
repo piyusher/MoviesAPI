@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using FluentAssertions;
+using Microsoft.Extensions.Logging;
 using Moq;
 using MoviesAPI.DataAccess.Entities;
 using MoviesAPI.Domain;
@@ -26,9 +27,10 @@ namespace MovieApiTests.Services
 
             _svc = new RatingsControllerService(_mockRatingsRepo.Object,
                 _mockMoviesRepo.Object,
-                _mockUserRepo.Object);
+                _mockUserRepo.Object,
+                new Mock<ILogger<IRatingsControllerService>>().Object);
         }
-
+        
         [Fact]
         public async Task CallsInsertWhenNoRatingExists()
         {
