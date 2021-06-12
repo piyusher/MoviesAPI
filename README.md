@@ -16,8 +16,9 @@ The API is ready to be launched. Detailed API documentation using Swagger UI
 **Swagger/documentation Url**: /help
 
 #### Using Docker
+Run below command on your local docker CLI
 
-    docker build -t moviesapi https://github.com/piyusher/MoviesAPI.git && docker run -it -p 8087:80 moviesapi
+    docker build -t moviesapi https://github.com/piyusher/MoviesAPI.git && docker run -it -p 8087:80 moviesapi.
 Once the container is running, go to: http://localhost:8087/help
 
 #### Using Visual Studio
@@ -44,5 +45,9 @@ Clone the Git Repo, open the .sln file in visual studio and launch
 - Deailed debug logging
 - Dedicated filter/attribute to validate existence of user and movie in database. They can then be directly applied to models wherever validation is needed.
 - May be even more consistent response models
+- 100% code coverage
+- Exception response modeling. For ex: Trying to add a movie name that already exists
+- Integration tests
+- Metrics implementation
 
 
