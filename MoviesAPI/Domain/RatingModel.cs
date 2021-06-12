@@ -4,8 +4,9 @@ namespace MoviesAPI.Domain
 {
     public class RatingModel
     {
+        /// <example>10</example>>
         [Required]
-        [Range(1, int.MaxValue)]
+        [Range(1, int.MaxValue)] 
         public int MovieId { get; set; }
 
         [Required]
