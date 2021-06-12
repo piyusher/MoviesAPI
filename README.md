@@ -5,14 +5,15 @@ This API has been created as a solution to an assesment. I have tried using SOLI
 ## Tech Stack
 
 - .Net core 3.1
-- EF Core, SqlLite database
+- EF Core, SqlLite
 - SeriLog
 - REST,  SwaggerUI
+- XUnit, Moq, InMemoryDatabase
 
 
 ## Running the project
 
-The API is ready to be launched. Detailed API documentation using Swagger UI
+The API is cloud-ready to be launched. Detailed API documentation using Swagger UI
 **Swagger/documentation Url**: /help
 
 #### Using Docker
@@ -29,7 +30,7 @@ Clone the Git Repo, open the .sln file in visual studio and launch
 - EF Code First, On startup, a SqlLite database gets created.
 - Dummty data is setup and seeded to database from the file DataAccess/DataSeed/SeedData.json in the API project.
 - The same data is also utilized to test the Repository layer using InMemoryDatabase.
-- AvgRating is a calculated field in MovieEntity that maintains the overall average rating for a movie. Instead of calculating average rating everytime, this will keep reads faster even during traffic. 
+- AvgRating is a calculated field in MovieEntity that maintains the overall average rating for a movie. Instead of calculating average rating everytime, this will keep the reads faster even during traffic. 
 
 ### More Details
 
@@ -49,5 +50,6 @@ Clone the Git Repo, open the .sln file in visual studio and launch
 - Exception response modeling. For ex: Trying to add a movie name that already exists
 - Integration tests
 - Metrics implementation
+- Authentication/Authorization
 
 
