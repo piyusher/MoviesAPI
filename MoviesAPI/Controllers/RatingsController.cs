@@ -31,7 +31,7 @@ namespace MoviesAPI.Controllers
         [ProducesResponseType(typeof(ProblemDetails), 500)]
         [HttpPost]
         [Route("rating")]
-        public async Task<IActionResult> AddUpdateRating(RatingModel rating)
+        public async Task<IActionResult> AddUpdateRating([FromBody]RatingModel rating)
         {
 
             var (isValid, message) = await _ratingsService.ValidateMovieAndUserId(rating.MovieId, rating.UserId);
