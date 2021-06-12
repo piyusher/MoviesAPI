@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Moq;
 using MoviesAPI.Controllers;
 using MoviesAPI.Domain;
+using MoviesAPI.Domain.RequestModels;
 using MoviesAPI.Services.Interfaces;
 using Xunit;
 
@@ -38,14 +39,15 @@ namespace MovieApiTests.ControllerTests
         [Fact]
         public async Task SearchReturns404WhenNotFound()
         {
+            var filters = new SearchMovieFilters("abc", 2020, "abc,xyz");
             //This should be called
-            _movieService.Setup(s => s.SearchMoviesAsync("abc", 2020, "abc,xyz"))
+            _movieService.Setup(s => s.SearchMoviesAsync(filters))
                 .ReturnsAsync(new List<MovieModelWithAvgRating>());
 
             //This should be called too
             _mockProblemFactory.SetupMockProblemDetails();
 
-            var result = await _moviesController.SearchMoviesAsync("abc", 2020, "abc,xyz");
+            var result = await _moviesController.SearchMoviesAsync(filters);
 
            //should return Not found with problem details
            result.Should().BeOfType<NotFoundObjectResult>();
@@ -63,7 +65,7 @@ namespace MovieApiTests.ControllerTests
             //Bad Request problem details should be returned
             _mockProblemFactory.SetupMockValidationProblemDetails();
 
-            var result = await _moviesController.SearchMoviesAsync("", 0, null);
+            var result = await _moviesController.SearchMoviesAsync(new SearchMovieFilters("", 0, null));
 
 
             //should return BadRequest with problem details
@@ -76,15 +78,16 @@ namespace MovieApiTests.ControllerTests
         [Fact]
         public async Task SearchReturns200WhenDataFound()
         {
+            var filters = new SearchMovieFilters("abc", 2020, "abc,xyz");
             //This should be called
-            _movieService.Setup(s => s.SearchMoviesAsync("abc", 2020, "abc,xyz"))
+            _movieService.Setup(s => s.SearchMoviesAsync(filters))
                 .ReturnsAsync(new List<MovieModelWithAvgRating>()
                 {
                     new MovieModelWithAvgRating()
                 });
 
 
-            var result = await _moviesController.SearchMoviesAsync("abc", 2020, "abc,xyz");
+            var result = await _moviesController.SearchMoviesAsync(filters);
 
 
             //should return BadRequest with problem details

@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using MoviesAPI.DataAccess.Entities;
 using MoviesAPI.Domain;
+using MoviesAPI.Domain.RequestModels;
 using MoviesAPI.Repositories.Interfaces;
 using MoviesAPI.Services;
 using MoviesAPI.Services.Interfaces;
@@ -32,7 +33,7 @@ namespace MovieApiTests.Services
                     new List<string>() {"abc", "xyz"}))
                 .ReturnsAsync(new List<MovieEntity>());
 
-            await _svc.SearchMoviesAsync("abc", 2020, "abc,xyz");
+            await _svc.SearchMoviesAsync(new SearchMovieFilters("abc", 2020, "abc,xyz"));
 
             _mockMoviesRepo.VerifyAll();
 
@@ -46,7 +47,7 @@ namespace MovieApiTests.Services
                     new List<string>() { "abc", "xyz" }))
                 .ReturnsAsync(new List<MovieEntity>());
 
-            await _svc.SearchMoviesAsync("abc", 2020, "abc    ,      xyz      ");
+            await _svc.SearchMoviesAsync( new SearchMovieFilters("abc", 2020, "abc    ,      xyz      "));
 
             _mockMoviesRepo.VerifyAll();
 

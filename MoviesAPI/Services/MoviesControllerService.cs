@@ -23,20 +23,20 @@ namespace MoviesAPI.Services
             _logger = logger;
         }
 
-        public async Task<List<MovieModelWithAvgRating>> SearchMoviesAsync(string title, int year, string genres)
+        public async Task<List<MovieModelWithAvgRating>> SearchMoviesAsync(SearchMovieFilters filters)
         {
             var listOfGenres = new List<string>();
 
             _logger.LogDebug("{@Method}: Converting {@GenresString} to a list of genres",
                 MethodBase.GetCurrentMethod(),
-                genres);
+                filters.Genres);
 
             //It is common to put a space between comma separated items, trim those
             //Avoid case sensitivity in some DBs,
             //Convert to lower-case to do lower-case comparison in DB
-            if (!string.IsNullOrEmpty(genres))
+            if (!string.IsNullOrEmpty(filters.Genres))
             {
-                listOfGenres = genres.Split(',')
+                listOfGenres = filters.Genres.Split(',')
                     .Select(genre => genre.Trim().ToLower())
                     .ToList();
             }
@@ -45,7 +45,7 @@ namespace MoviesAPI.Services
                 listOfGenres);
 
             //Get entities and convert to domain model
-            var entities = await _repo.SearchMoviesAsync(title, year, listOfGenres);
+            var entities = await _repo.SearchMoviesAsync(filters.Title, filters.Year, listOfGenres);
             _logger.LogDebug("{@Method}: Repository returned {@MovieEntities}",
                 MethodBase.GetCurrentMethod(),
                 entities);

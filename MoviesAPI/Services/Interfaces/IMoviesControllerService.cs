@@ -10,7 +10,7 @@ namespace MoviesAPI.Services.Interfaces
 {
     public interface IMoviesControllerService
     {
-        Task<List<MovieModelWithAvgRating>> SearchMoviesAsync(string title, int year, string genres);
+        Task<List<MovieModelWithAvgRating>> SearchMoviesAsync(SearchMovieFilters filters);
         Task<List<MovieModelWithAvgRating>> GetTopRatedMovies();
         Task<List<MovieModelWithAvgRating>> GetTopMoviesRatedByUser(long userId);
     }

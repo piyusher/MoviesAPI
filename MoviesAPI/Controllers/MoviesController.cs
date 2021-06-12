@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MoviesAPI.Domain;
+using MoviesAPI.Domain.RequestModels;
 using MoviesAPI.FiltersAttributes;
 using MoviesAPI.Services.Interfaces;
 
@@ -23,9 +24,6 @@ namespace MoviesAPI.Controllers
         /// Searches movies using: text in title, genres or/and year of release.
         /// One criteria is mandatory.
         /// </summary>
-        /// <param name="title">Full or partial title of the movie.A title is matched if it contains the input text.</param>
-        /// <param name="year">The year of the release of the movie. Minimum value 1850, Maximum current year</param>
-        /// <param name="genres">A comma separated list of genres. Refer to the '/genres' endpoint for the list</param>
         /// <response code="200">Success. Movies with given criteria are found</response>
         /// <response code="404">No Movies found for the given criteria.</response>
         /// <response code="400">Input validation error.</response>
@@ -36,22 +34,19 @@ namespace MoviesAPI.Controllers
         [ProducesResponseType(typeof(ProblemDetails), 404)]
         [ProducesResponseType(typeof(ProblemDetails), 500)]
         [Route("movies/search")]
-        public async Task<IActionResult> SearchMoviesAsync(
-            [FromQuery, MaxLength(500)] string title,
-            [FromQuery, MovieYearRange] int year,
-            [FromQuery] string genres)
+        public async Task<IActionResult> SearchMoviesAsync([FromQuery]SearchMovieFilters filters)
         {
             //If no search criteria is provided return bad request
-            if (string.IsNullOrEmpty(genres?.Trim())
-                && string.IsNullOrEmpty(title?.Trim())
-                && year == 0)
+            if (string.IsNullOrEmpty(filters.Genres?.Trim())
+                && string.IsNullOrEmpty(filters.Title.Trim())
+                && filters.Year == 0)
             {
                 ModelState.AddModelError("NoCriteria",MessageStrings.NoSearchCriteria);
                 return new BadRequestObjectResult(ValidationProblem(ModelState));
             }
 
             //get data from the service
-            var movieList = await _moviesSvc.SearchMoviesAsync(title,year,genres);
+            var movieList = await _moviesSvc.SearchMoviesAsync(filters);
 
             //Return 404 is no movies found
             if (movieList.Count == 0)
@@ -59,7 +54,7 @@ namespace MoviesAPI.Controllers
                 return new NotFoundObjectResult(
                     Problem(statusCode:404,
                     title: MessageStrings.NoResultsFound,
-                    detail:$"Title:{title}, Year:{year}, genres:{genres}"
+                    detail:$"Title:{filters.Title}, Year:{filters.Year}, genres:{filters.Genres}"
                     ));
             }
 

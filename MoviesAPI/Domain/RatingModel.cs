@@ -10,7 +10,7 @@ namespace MoviesAPI.Domain
     public class RatingModel
     {
         [Required]
-        [Range(1, long.MaxValue)]
+        [Range(1, int.MaxValue)]
         public int MovieId { get; set; }
 
         [Required]

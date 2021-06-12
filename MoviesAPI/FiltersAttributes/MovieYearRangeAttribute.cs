@@ -15,6 +15,7 @@ namespace MoviesAPI.FiltersAttributes
             {
                 return new ValidationResult("Cannot parse year value as integer");
             }
+            //1850 is closest minimum when first movie was made
             if (val == 0 || (val >= 1850 && val <= DateTime.Now.Year))
             {
                 return ValidationResult.Success;
